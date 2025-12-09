@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = useState(null);
   const [fileName, setFileName] = useState("data.json");
 
-  // 1. Cargar Archivo
+  // 1. Cargar
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -24,7 +24,7 @@ function App() {
     reader.readAsText(file);
   };
 
-  // 2. Modificar (Update)
+  // 2. Modificar
   const handleUpdate = (path, newValue) => {
     const newData = structuredClone(data);
     let current = newData;
@@ -33,7 +33,7 @@ function App() {
     setData(newData);
   };
 
-  // 3. Eliminar (Delete)
+  // 3. Eliminar
   const handleDelete = (path) => {
     if (path.length === 0) { setData(null); return; }
     const newData = structuredClone(data);
@@ -47,7 +47,7 @@ function App() {
     setData(newData);
   };
 
-  // 4. Agregar (Add)
+  // 4. Agregar
   const handleAdd = (path, isArrayTarget) => {
     const newData = structuredClone(data);
     let current = newData;
@@ -80,60 +80,56 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 font-sans text-slate-800">
+    <div className="min-h-screen p-6 font-sans">
 
-      {/* Header Tsool - Limpio y sin etiquetas extra */}
-      <header className="max-w-6xl mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-200 pb-6">
+      {/* Header */}
+      <header className="max-w-6xl mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-border pb-6">
         <div>
-          <h1 className="text-4xl font-black tracking-tight text-slate-800">
-            Tsool <span className="text-blue-600">JSON</span>
+          {/* USO DE VARIABLE: text-primary */}
+          <h1 className="text-4xl font-black tracking-tight text-text-main">
+            Tsool <span className="text-primary">JSON</span>
           </h1>
-          <p className="text-slate-500 mt-1 text-sm">
+          <p className="text-text-muted mt-1 text-sm">
             Editor visual para estructurar y modificar documentos JSON.
           </p>
         </div>
 
         <div className="flex gap-3">
-          <label className="flex items-center gap-2 cursor-pointer bg-white border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 hover:border-blue-400 text-slate-700 shadow-sm transition-all active:scale-95 select-none text-sm font-medium">
-            <FaFileImport className="text-blue-500" />
+          {/* REFACTORIZACIÓN: .btn-secondary */}
+          <label className="btn-secondary">
+            <FaFileImport className="text-primary" />
             <span>Importar</span>
             <input type="file" accept=".json" onChange={handleFileUpload} className="hidden" />
           </label>
 
           {data && (
-            <button
-              onClick={handleExport}
-              className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 shadow-lg shadow-blue-900/20 transition-all active:scale-95 text-sm font-medium"
-            >
+            /* REFACTORIZACIÓN: .btn-primary */
+            <button onClick={handleExport} className="btn-primary">
               <FaDownload /> <span>Descargar</span>
             </button>
           )}
         </div>
       </header>
 
-      {/* Main Content Split View */}
+      {/* Main Content */}
       <main className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 h-[75vh]">
 
-        {/* Columna Izquierda: Editor Visual */}
-        <section className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col overflow-hidden">
-          <div className="p-3 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-            <h2 className="font-bold text-slate-700 text-sm flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-blue-500"></span> Editor Visual
+        {/* Columna Izquierda */}
+        <section className="panel">
+          <div className="panel-header">
+            <h2 className="font-bold text-text-main text-sm flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary"></span> Editor Visual
             </h2>
-            <span className="text-xs text-slate-400">Modo interactivo</span>
+            <span className="text-xs text-text-muted">Modo interactivo</span>
           </div>
           <div className="flex-1 overflow-auto p-4 custom-scrollbar">
             {data ? (
               <JsonNode
-                name="root"
-                value={data}
-                path={[]}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-                onAdd={handleAdd}
+                name="root" value={data} path={[]}
+                onUpdate={handleUpdate} onDelete={handleDelete} onAdd={handleAdd}
               />
             ) : (
-              <div className="h-full flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-100 rounded-lg m-4">
+              <div className="h-full flex flex-col items-center justify-center text-text-muted border-2 border-dashed border-border rounded-lg m-4">
                 <FaFileImport size={40} className="mb-4 text-slate-200" />
                 <p>Importa un archivo JSON para comenzar</p>
               </div>
@@ -141,13 +137,13 @@ function App() {
           </div>
         </section>
 
-        {/* Columna Derecha: Live Preview */}
+        {/* Columna Derecha */}
         <section className="bg-[#1e293b] rounded-xl shadow-lg flex flex-col overflow-hidden text-slate-300 font-mono text-xs">
           <div className="p-3 border-b border-slate-700 bg-[#0f172a] flex items-center gap-2">
             <FaCode className="text-blue-400" />
             <h2 className="font-semibold text-slate-100">Vista Previa</h2>
           </div>
-          <div className="flex-1 overflow-auto p-4">
+          <div className="flex-1 overflow-auto p-4 custom-scrollbar">
             <pre className="text-green-400">{JSON.stringify(data, null, 2)}</pre>
           </div>
         </section>
