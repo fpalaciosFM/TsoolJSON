@@ -1,67 +1,158 @@
 @import "tailwindcss";
 
-/* 1. TEMA SEMÁNTICO */
+/* 1. CONFIGURACIÓN DEL TEMA */
 @theme {
-  --color-primary: #2563eb;       /* blue-600 */
-  --color-primary-hover: #1d4ed8; /* blue-700 */
-  --color-primary-light: #eff6ff; /* blue-50 */
-  
-  --color-text-main: #1e293b;     /* slate-800 */
-  --color-text-muted: #64748b;    /* slate-500 */
-  
-  --color-border: #cbd5e1;        /* slate-300 */
-  --color-border-light: #f1f5f9;  /* slate-100 */
+  /* Dejamos limpio para usar variables nativas */
 }
 
-/* 2. ESTILOS GLOBALES */
+/* 2. VARIABLES DE COLOR */
+:root {
+  /* MODO CLARO */
+  color-scheme: light;
+
+  --color-primary: #2563eb;
+  /* blue-600 */
+  --color-primary-hover: #1d4ed8;
+  /* blue-700 */
+  --color-primary-light: #eff6ff;
+  /* blue-50 */
+
+  --bg-body: #f8fafc;
+  /* slate-50 */
+  --bg-panel: #ffffff;
+  /* white */
+  --bg-badge: #f1f5f9;
+  /* slate-100 */
+
+  --text-main: #1e293b;
+  /* slate-800 */
+  --text-muted: #64748b;
+  /* slate-500 */
+
+  --border-color: #cbd5e1;
+  /* slate-300 */
+  --border-light: #f1f5f9;
+  /* slate-100 */
+}
+
+/* MODO OSCURO */
+:root.dark {
+  color-scheme: dark;
+
+  --color-primary: #60a5fa;
+  /* blue-400 */
+  --color-primary-hover: #93c5fd;
+  /* blue-300 */
+  --color-primary-light: #1e3a8a;
+  /* blue-900 */
+
+  --bg-body: #0f172a;
+  /* slate-900 */
+  --bg-panel: #1e293b;
+  /* slate-800 */
+  --bg-badge: #334155;
+  /* slate-700 */
+
+  --text-main: #f1f5f9;
+  /* slate-100 */
+  --text-muted: #94a3b8;
+  /* slate-400 */
+
+  --border-color: #334155;
+  /* slate-700 */
+  --border-light: #1e293b;
+  /* slate-800 */
+}
+
+/* 3. ESTILOS GLOBALES */
 body {
-  background-color: #f8fafc;
-  color: var(--color-text-main);
+  background-color: var(--bg-body);
+  color: var(--text-main);
   font-family: ui-sans-serif, system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 3. COMPONENTES */
+/* 4. COMPONENTES CORREGIDOS */
 
-/* Botón Principal (Exportar/Descargar) */
+/* Nota: Ya no usamos .btn-base con @apply dentro de otros, 
+   sino que aplicamos las utilidades directamente en cada uno. */
+
+/* Botón Primario */
 .btn-primary {
-  @apply flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all active:scale-95 cursor-pointer select-none
-         bg-primary text-white shadow-lg shadow-blue-900/20 hover:bg-primary-hover border-none;
+  @apply flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all active:scale-95 cursor-pointer select-none text-white shadow-lg shadow-blue-900/20 border-none;
+  background-color: var(--color-primary);
 }
 
-/* Botón Secundario (Importar) */
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+
+  @media (prefers-color-scheme: dark) {
+    color: #0f172a;
+  }
+}
+
+/* Botón Secundario */
 .btn-secondary {
-  @apply flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all active:scale-95 cursor-pointer select-none
-         bg-white text-text-main border border-border shadow-sm hover:bg-primary-light hover:border-primary;
+  @apply flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all active:scale-95 cursor-pointer select-none shadow-sm border;
+  background-color: var(--bg-panel);
+  color: var(--text-main);
+  border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-badge);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 /* Paneles */
 .panel {
-  @apply bg-white rounded-xl shadow-sm border border-border flex flex-col overflow-hidden;
+  @apply rounded-xl shadow-sm border flex flex-col overflow-hidden transition-colors duration-300;
+  background-color: var(--bg-panel);
+  border-color: var(--border-color);
 }
 
 .panel-header {
-  @apply p-3 border-b border-border-light bg-slate-50/50 flex items-center justify-between;
+  @apply p-3 border-b flex items-center justify-between transition-colors duration-300;
+  border-color: var(--border-light);
+  background-color: var(--bg-badge);
 }
 
-/* Inputs minimalistas */
+/* Inputs */
 .input-minimal {
-  @apply bg-transparent border-b border-dashed border-border px-1 py-0.5 text-sm 
-         text-blue-900 w-full max-w-[250px] transition-colors placeholder-slate-300
-         focus:outline-none focus:border-primary focus:border-b-2 hover:border-text-muted;
+  @apply bg-transparent border-b border-dashed px-1 py-0.5 text-sm w-full max-w-[250px] transition-colors focus:outline-none focus:border-b-2;
+
+  color: var(--color-primary);
+  border-color: var(--border-color);
 }
 
-/* Scrollbar personalizado */
+.input-minimal:focus {
+  border-color: var(--color-primary);
+}
+
+.input-minimal::placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+/* Badges */
+.badge {
+  @apply text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-sm;
+  background-color: var(--bg-badge);
+  color: var(--text-muted);
+}
+
+/* Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
+  background-color: var(--border-color);
   border-radius: 4px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #94a3b8;
 }

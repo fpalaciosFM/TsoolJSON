@@ -49,7 +49,7 @@ const JsonNode = ({ name, value, path, onUpdate, onDelete, onAdd }) => {
                         placeholder="null"
                     />
                 ) : (
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-slate-100 px-2 py-0.5 rounded-sm">
+                    <span className="badge">
                         {isArray ? `Lista [${value.length}]` : 'Objeto'}
                     </span>
                 )}
